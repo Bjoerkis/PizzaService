@@ -1,5 +1,7 @@
-package com.example.pizzaservice;
+package com.example.pizzaservice.controllers;
 
+import com.example.pizzaservice.repositories.PizzasRepository;
+import com.example.pizzaservice.ResourceNotFound;
 import com.example.pizzaservice.entities.Pizza;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/pizzas")
 public class PizzaController {
+
 
     private final PizzasRepository pizzasRepository;
 
@@ -68,12 +71,16 @@ public class PizzaController {
         return response;
     }
 
-    @PatchMapping("/{menuNumber}/{name}")
-    public ResponseEntity<Pizza> partialPizzaUpdate(@PathVariable int menuNumber, @PathVariable String name) {
+    @PatchMapping(value = "/{menuNumber}/{name}/{price}/{ingredients}")
+    public ResponseEntity<Pizza> partialPizzaUpdateName(@PathVariable int menuNumber,
+                                                        @PathVariable String name,
+                                                        @PathVariable int price,@PathVariable String ingredients) {
         try {
             Pizza pizza = pizzasRepository.findById(menuNumber).get();
             pizza.setName(name);
-            return new ResponseEntity<Pizza>(pizzasRepository.save(pizza), HttpStatus.OK);
+            pizza.setPrice(price);
+            pizza.setIngredients(ingredients);
+            return new ResponseEntity<>(pizzasRepository.save(pizza), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -1,4 +1,4 @@
-package com.example.pizzaservice;
+package com.example.pizzaservice.repositories;
 
 import com.example.pizzaservice.entities.Pizza;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +15,6 @@ public interface PizzasRepository extends JpaRepository<Pizza, Integer> {
     List<Pizza> findByIngredients(String ingredients);
 
     Optional<Pizza> findByMenuNumber(int menuNumber);
+
 
 }
